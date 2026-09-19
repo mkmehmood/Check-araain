@@ -77,6 +77,14 @@ export interface EventItem {
   sort_order?: number;
 }
 
+export type PageCategory =
+  | 'documentation'
+  | 'history'
+  | 'blog'
+  | 'environmental'
+  | 'department'
+  | 'gallery';
+
 export interface PageItem {
   id?: number | string;
   slug: string;
@@ -90,6 +98,7 @@ export interface PageItem {
   bannerPhoto?: string;
   published?: boolean | number;
   sort_order?: number;
+  category?: PageCategory | string;
 }
 
 export interface GalleryItem {
