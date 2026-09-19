@@ -9,11 +9,15 @@ export interface ExtractedMemberData {
   fatherNameUr?: string;
   caste?: string;
   cnic?: string;
+  dob?: string;
   gender?: string;
   membershipType?: string;
   phone?: string;
   email?: string;
   address?: string;
+  occupation?: string;
+  education?: string;
+  residentialStatus?: string;
   verificationUrl?: string;
   issuedDate?: string;
   authority?: string;
@@ -82,6 +86,11 @@ export function parseQrPayload(data: string): ExtractedMemberData {
       result.cnic = line.replace(/^CNIC:\s*/i, '').trim();
     }
 
+    // Date of Birth
+    if (/^DOB:\s*(.+)$/i.test(line)) {
+      result.dob = line.replace(/^DOB:\s*/i, '').trim();
+    }
+
     // Gender
     if (/^Gender:\s*(.+)$/i.test(line)) {
       result.gender = line.replace(/^Gender:\s*/i, '').trim();
@@ -102,9 +111,26 @@ export function parseQrPayload(data: string): ExtractedMemberData {
       result.email = line.replace(/^Email:\s*/i, '').trim();
     }
 
-    // Address
-    if (/^Address.*:\s*(.+)$/i.test(line)) {
+    // Address (English line only - the Urdu address line uses a different label)
+    if (/^Address\s*\(English\).*:\s*(.+)$/i.test(line)) {
+      result.address = line.replace(/^Address\s*\(English\).*:\s*/i, '').trim();
+    } else if (/^Address.*:\s*(.+)$/i.test(line)) {
       result.address = line.replace(/^Address.*:\s*/i, '').trim();
+    }
+
+    // Education
+    if (/^Education:\s*(.+)$/i.test(line)) {
+      result.education = line.replace(/^Education:\s*/i, '').trim();
+    }
+
+    // Occupation / Work
+    if (/^Occupation.*:\s*(.+)$/i.test(line)) {
+      result.occupation = line.replace(/^Occupation.*:\s*/i, '').trim();
+    }
+
+    // Residential Status
+    if (/^Residential Status:\s*(.+)$/i.test(line)) {
+      result.residentialStatus = line.replace(/^Residential Status:\s*/i, '').trim();
     }
 
     // Authority
