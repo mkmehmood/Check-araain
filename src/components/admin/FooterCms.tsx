@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SiteSettings } from '../../types';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { SaveBar } from './SaveBar';
 import { pushSettingsDocToCloud } from '../../services/firebase';
 import { 
@@ -26,9 +26,7 @@ export const FooterCms: React.FC<FooterCmsProps> = ({
 }) => {
   const [formData, setFormData] = useState({
     footerDesc: settings.footerDesc || '',
-    footerDescUr: settings.footerDescUr || '',
     footerCopy: settings.footerCopy || '',
-    footerCopyUr: settings.footerCopyUr || '',
     socialFacebook: settings.socialFacebook || '',
     socialTwitter: settings.socialTwitter || '',
     socialWhatsapp: settings.socialWhatsapp || '',
@@ -44,9 +42,7 @@ export const FooterCms: React.FC<FooterCmsProps> = ({
   useEffect(() => {
     setFormData({
       footerDesc: settings.footerDesc || '',
-      footerDescUr: settings.footerDescUr || '',
       footerCopy: settings.footerCopy || '',
-      footerCopyUr: settings.footerCopyUr || '',
       socialFacebook: settings.socialFacebook || '',
       socialTwitter: settings.socialTwitter || '',
       socialWhatsapp: settings.socialWhatsapp || '',
@@ -68,9 +64,7 @@ export const FooterCms: React.FC<FooterCmsProps> = ({
       // 1. siteConfig/footer
       await pushSettingsDocToCloud('footer', {
         footerDesc: formData.footerDesc,
-        footerDescUr: formData.footerDescUr,
         footerCopy: formData.footerCopy,
-        footerCopyUr: formData.footerCopyUr,
       });
 
       // 2. siteConfig/social
@@ -125,12 +119,11 @@ export const FooterCms: React.FC<FooterCmsProps> = ({
           {isUrdu ? '1. فوٹر کا مختصر تعارف اور کاپی رائٹ' : '1. Footer Description & Copyright'}
         </h4>
 
-        <BilingualField
+        <SingleField
           label={isUrdu ? 'فوٹر کی مختصر تفصیل (footerDesc)' : 'Footer About Paragraph'}
-          valueEn={formData.footerDesc}
-          valueUr={formData.footerDescUr}
-          onChange={(en, ur) => {
-            setFormData(prev => ({ ...prev, footerDesc: en, footerDescUr: ur }));
+          value={formData.footerDesc}
+          onChange={(val) => {
+            setFormData(prev => ({ ...prev, footerDesc: val }));
             setIsDirty(true);
           }}
           multiline={true}
@@ -139,12 +132,11 @@ export const FooterCms: React.FC<FooterCmsProps> = ({
           isUrdu={isUrdu}
         />
 
-        <BilingualField
+        <SingleField
           label={isUrdu ? 'کاپی رائٹ کی تحریر (footerCopy)' : 'Copyright Notice'}
-          valueEn={formData.footerCopy}
-          valueUr={formData.footerCopyUr}
-          onChange={(en, ur) => {
-            setFormData(prev => ({ ...prev, footerCopy: en, footerCopyUr: ur }));
+          value={formData.footerCopy}
+          onChange={(val) => {
+            setFormData(prev => ({ ...prev, footerCopy: val }));
             setIsDirty(true);
           }}
           placeholder="e.g. © 2025 Araain Welfare Association Bannu. All rights reserved."
@@ -243,9 +235,7 @@ export const FooterCms: React.FC<FooterCmsProps> = ({
         onReset={() => {
           setFormData({
             footerDesc: settings.footerDesc || '',
-            footerDescUr: settings.footerDescUr || '',
             footerCopy: settings.footerCopy || '',
-            footerCopyUr: settings.footerCopyUr || '',
             socialFacebook: settings.socialFacebook || '',
             socialTwitter: settings.socialTwitter || '',
             socialWhatsapp: settings.socialWhatsapp || '',

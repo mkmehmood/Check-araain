@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { EventItem, SiteSettings } from '../../types';
 import { ImageUploadField } from './ImageUploadField';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { RepeatableListEditor } from './RepeatableListEditor';
 import { SaveBar } from './SaveBar';
 import { pushEventsToCloud, pushSettingsDocToCloud } from '../../services/firebase';
@@ -158,11 +158,10 @@ export const EventsCms: React.FC<EventsCmsProps> = ({
           renderItem={(evt, index, updateEvent) => (
             <div className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <BilingualField
+                <SingleField
                   label={isUrdu ? 'تقریب کا عنوان (Event Title)' : 'Event Title'}
-                  valueEn={evt.title}
-                  valueUr={evt.titleUr}
-                  onChange={(en, ur) => updateEvent({ title: en, titleUr: ur })}
+                  value={evt.title}
+                  onChange={(val) => updateEvent({ title: val })}
                   required={true}
                   isUrdu={isUrdu}
                 />
@@ -241,21 +240,19 @@ export const EventsCms: React.FC<EventsCmsProps> = ({
               </div>
 
               {/* Venue */}
-              <BilingualField
+              <SingleField
                 label={isUrdu ? 'مقام و پتہ (Venue / Location)' : 'Venue / Location'}
-                valueEn={evt.place}
-                valueUr={evt.placeUr}
-                onChange={(en, ur) => updateEvent({ place: en, placeUr: ur })}
+                value={evt.place}
+                onChange={(val) => updateEvent({ place: val })}
                 placeholder="e.g. Community Center, Bannu City"
                 isUrdu={isUrdu}
               />
 
               {/* Description */}
-              <BilingualField
+              <SingleField
                 label={isUrdu ? 'تفصیل و ایجنڈا (Description & Agenda)' : 'Event Description / Agenda'}
-                valueEn={evt.desc}
-                valueUr={evt.descUr}
-                onChange={(en, ur) => updateEvent({ desc: en, descUr: ur })}
+                value={evt.desc}
+                onChange={(val) => updateEvent({ desc: val })}
                 multiline={true}
                 rows={3}
                 isUrdu={isUrdu}

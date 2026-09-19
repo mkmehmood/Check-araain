@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Program, SiteSettings } from '../../types';
 import { ImageUploadField } from './ImageUploadField';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { RepeatableListEditor } from './RepeatableListEditor';
 import { SaveBar } from './SaveBar';
 import { pushProgramsToCloud, pushSettingsDocToCloud } from '../../services/firebase';
@@ -193,11 +193,10 @@ export const ProgramsCms: React.FC<ProgramsCmsProps> = ({
           renderItem={(prog, index, updateProgram) => (
             <div className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <BilingualField
+                <SingleField
                   label={isUrdu ? 'پروگرام کا نام (Title)' : 'Program Title'}
-                  valueEn={prog.title}
-                  valueUr={prog.titleUr}
-                  onChange={(en, ur) => updateProgram({ title: en, titleUr: ur })}
+                  value={prog.title}
+                  onChange={(val) => updateProgram({ title: val })}
                   required={true}
                   isUrdu={isUrdu}
                 />
@@ -216,11 +215,10 @@ export const ProgramsCms: React.FC<ProgramsCmsProps> = ({
                 </div>
               </div>
 
-              <BilingualField
+              <SingleField
                 label={isUrdu ? 'تفصیل و مقاصد (Description)' : 'Detailed Description'}
-                valueEn={prog.desc}
-                valueUr={prog.descUr}
-                onChange={(en, ur) => updateProgram({ desc: en, descUr: ur })}
+                value={prog.desc}
+                onChange={(val) => updateProgram({ desc: val })}
                 multiline={true}
                 rows={3}
                 isUrdu={isUrdu}

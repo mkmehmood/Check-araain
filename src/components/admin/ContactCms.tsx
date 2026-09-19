@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SiteSettings, ContactDetail } from '../../types';
 import { ImageUploadField } from './ImageUploadField';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { RepeatableListEditor } from './RepeatableListEditor';
 import { SaveBar } from './SaveBar';
 import { pushSettingsDocToCloud } from '../../services/firebase';
@@ -31,7 +31,6 @@ export const ContactCms: React.FC<ContactCmsProps> = ({
 }) => {
   const [formData, setFormData] = useState({
     contactAddress: settings.contactAddress || '',
-    contactAddressUr: settings.contactAddressUr || '',
     contactHours: settings.contactHours || '',
     contactPhone: settings.contactPhone || '',
     contactEmail: settings.contactEmail || '',
@@ -50,7 +49,6 @@ export const ContactCms: React.FC<ContactCmsProps> = ({
   useEffect(() => {
     setFormData({
       contactAddress: settings.contactAddress || '',
-      contactAddressUr: settings.contactAddressUr || '',
       contactHours: settings.contactHours || '',
       contactPhone: settings.contactPhone || '',
       contactEmail: settings.contactEmail || '',
@@ -163,16 +161,11 @@ export const ContactCms: React.FC<ContactCmsProps> = ({
           </div>
         </div>
 
-        <BilingualField
+        <SingleField
           label={isUrdu ? 'مرکزی دفتر کا پتہ (contactAddress)' : 'Secretariat Office Address'}
-          valueEn={formData.contactAddress}
-          valueUr={formData.contactAddressUr}
-          onChange={(en, ur) => {
-            setFormData(prev => ({
-              ...prev,
-              contactAddress: en,
-              contactAddressUr: ur,
-            }));
+          value={formData.contactAddress}
+          onChange={(val) => {
+            setFormData(prev => ({ ...prev, contactAddress: val }));
             setIsDirty(true);
           }}
           placeholder="e.g. Near Railway Station Road, Bannu City, Khyber Pakhtunkhwa"
@@ -253,11 +246,10 @@ export const ContactCms: React.FC<ContactCmsProps> = ({
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="md:col-span-2">
-                  <BilingualField
+                  <SingleField
                     label={isUrdu ? 'چینل کا نام / ڈیسک (Desk Title)' : 'Desk Title'}
-                    valueEn={channel.title}
-                    valueUr={channel.titleUr}
-                    onChange={(en, ur) => updateChannel({ title: en, titleUr: ur })}
+                    value={channel.title}
+                    onChange={(val) => updateChannel({ title: val })}
                     isUrdu={isUrdu}
                   />
                 </div>
@@ -293,12 +285,11 @@ export const ContactCms: React.FC<ContactCmsProps> = ({
                 />
               </div>
 
-              <BilingualField
+              <SingleField
                 label={isUrdu ? 'اضافی نوٹ / اوقات (Note)' : 'Additional Note / Timings'}
-                valueEn={channel.note}
-                valueUr={channel.noteUr}
-                onChange={(en, ur) => updateChannel({ note: en, noteUr: ur })}
-                placeholder="e.g. Available 9am to 5pm / صبح 9 تا شام 5 بجے"
+                value={channel.note}
+                onChange={(val) => updateChannel({ note: val })}
+                placeholder="e.g. Available 9am to 5pm"
                 isUrdu={isUrdu}
               />
             </div>
@@ -316,7 +307,6 @@ export const ContactCms: React.FC<ContactCmsProps> = ({
         onReset={() => {
           setFormData({
             contactAddress: settings.contactAddress || '',
-            contactAddressUr: settings.contactAddressUr || '',
             contactHours: settings.contactHours || '',
             contactPhone: settings.contactPhone || '',
             contactEmail: settings.contactEmail || '',

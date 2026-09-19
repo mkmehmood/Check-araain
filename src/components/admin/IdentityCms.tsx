@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SiteSettings } from '../../types';
 import { ImageUploadField } from './ImageUploadField';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { SaveBar } from './SaveBar';
 import { pushSettingsDocToCloud } from '../../services/firebase';
 import { ShieldCheck, Eye, Sparkles, Building2, Megaphone, Info, CheckCircle2 } from 'lucide-react';
@@ -29,7 +29,6 @@ export const IdentityCms: React.FC<IdentityCmsProps> = ({
     announcementBadge: settings.announcementBadge || 'UPDATE',
     announcementBadgeUr: settings.announcementBadgeUr || 'اہم اعلان',
     announcementText: settings.announcementText || '',
-    announcementTextUr: settings.announcementTextUr || '',
     announcementLink: settings.announcementLink || '',
     announcementLinkText: settings.announcementLinkText || '',
   });
@@ -51,7 +50,6 @@ export const IdentityCms: React.FC<IdentityCmsProps> = ({
       announcementBadge: settings.announcementBadge || 'UPDATE',
       announcementBadgeUr: settings.announcementBadgeUr || 'اہم اعلان',
       announcementText: settings.announcementText || '',
-      announcementTextUr: settings.announcementTextUr || '',
       announcementLink: settings.announcementLink || '',
       announcementLinkText: settings.announcementLinkText || '',
     });
@@ -81,7 +79,6 @@ export const IdentityCms: React.FC<IdentityCmsProps> = ({
         announcementBadge: formData.announcementBadge,
         announcementBadgeUr: formData.announcementBadgeUr,
         announcementText: formData.announcementText,
-        announcementTextUr: formData.announcementTextUr,
         announcementLink: formData.announcementLink,
         announcementLinkText: formData.announcementLinkText,
       };
@@ -302,16 +299,13 @@ export const IdentityCms: React.FC<IdentityCmsProps> = ({
             </div>
           </div>
 
-          <BilingualField
+          <SingleField
             label={isUrdu ? 'اعلان کا متن' : 'Announcement Notice Text'}
-            valueEn={formData.announcementText}
-            valueUr={formData.announcementTextUr}
-            onChangeEn={(val) => updateField('announcementText', val)}
-            onChangeUr={(val) => updateField('announcementTextUr', val)}
+            value={formData.announcementText}
+            onChange={(val) => updateField('announcementText', val)}
             multiline={true}
             rows={2}
-            placeholderEn="Registration for the upcoming annual general body convention is now open..."
-            placeholderUr="سالانہ جنرل کونسل اجلاس کے لیے رجسٹریشن کا باضابطہ آغاز کر دیا گیا ہے..."
+            placeholder="Registration for the upcoming annual general body convention is now open..."
             isUrdu={isUrdu}
           />
 
@@ -364,7 +358,6 @@ export const IdentityCms: React.FC<IdentityCmsProps> = ({
             announcementBadge: settings.announcementBadge || 'UPDATE',
             announcementBadgeUr: settings.announcementBadgeUr || 'اہم اعلان',
             announcementText: settings.announcementText || '',
-            announcementTextUr: settings.announcementTextUr || '',
             announcementLink: settings.announcementLink || '',
             announcementLinkText: settings.announcementLinkText || '',
           });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GalleryItem, SiteSettings } from '../../types';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { ImageUploadField } from './ImageUploadField';
 import { RepeatableListEditor } from './RepeatableListEditor';
 import { SaveBar } from './SaveBar';
@@ -235,11 +235,10 @@ export const GalleryCms: React.FC<GalleryCmsProps> = ({
                 isUrdu={isUrdu}
               />
 
-              <BilingualField
+              <SingleField
                 label={isUrdu ? 'تصویر کا کیپشن / وضاحت' : 'Photo Caption / Title'}
-                valueEn={gal.caption}
-                valueUr={gal.captionUr}
-                onChange={(en, ur) => updateGal({ caption: en, captionUr: ur })}
+                value={gal.caption}
+                onChange={(val) => updateGal({ caption: val })}
                 placeholder="e.g. Annual Youth Convention 2025"
                 isUrdu={isUrdu}
               />

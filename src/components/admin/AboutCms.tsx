@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { SiteSettings, Leader } from '../../types';
-import { BilingualField } from './BilingualField';
 import { SaveBar } from './SaveBar';
 import { pushSettingsDocToCloud } from '../../services/firebase';
 import { 

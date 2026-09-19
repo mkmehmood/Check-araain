@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageItem } from '../../types';
 import { ImageUploadField } from './ImageUploadField';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { RepeatableListEditor } from './RepeatableListEditor';
 import { SaveBar } from './SaveBar';
 import { pushPagesToCloud } from '../../services/firebase';
@@ -324,27 +324,21 @@ export const PagesCms: React.FC<PagesCmsProps> = ({
                 </div>
               </div>
 
-              <BilingualField
+              <SingleField
                 label={isUrdu ? 'دستاویز کا مکمل عنوان' : 'Document Main Title'}
-                valueEn={page.title || ''}
-                valueUr={page.titleUr || ''}
-                onChangeEn={(val) => updatePage({ ...page, title: val })}
-                onChangeUr={(val) => updatePage({ ...page, titleUr: val })}
-                placeholderEn="e.g. Constitution & Governance By-laws of Araain Bannu"
-                placeholderUr="e.g. مرکزی آئین و تنظیمی ضوابط برائے آرائیں بنوں"
+                value={page.title || ''}
+                onChange={(val) => updatePage({ ...page, title: val })}
+                placeholder="e.g. Constitution & Governance By-laws of Araain Bannu"
                 isUrdu={isUrdu}
               />
 
-              <BilingualField
+              <SingleField
                 label={isUrdu ? 'دستاویز کا مکمل مواد (Markdown سپورٹ)' : 'Full Document Content (Markdown Supported)'}
-                valueEn={page.body || ''}
-                valueUr={page.bodyUr || ''}
-                onChangeEn={(val) => updatePage({ ...page, body: val })}
-                onChangeUr={(val) => updatePage({ ...page, bodyUr: val })}
+                value={page.body || ''}
+                onChange={(val) => updatePage({ ...page, body: val })}
                 multiline={true}
                 rows={8}
-                placeholderEn="Enter official document text, clauses, historical notes, or announcements..."
-                placeholderUr="سرکاری دستاویز کا مکمل متن، دفعات، تاریخی پس منظر یا پالیسی تحریر فرمائیں..."
+                placeholder="Enter official document text, clauses, historical notes, or announcements..."
                 isUrdu={isUrdu}
               />
             </div>

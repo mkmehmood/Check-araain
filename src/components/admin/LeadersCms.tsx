@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Leader, SiteSettings } from '../../types';
 import { ImageUploadField } from './ImageUploadField';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { RepeatableListEditor } from './RepeatableListEditor';
 import { SaveBar } from './SaveBar';
 import { pushLeadersToCloud, pushSettingsDocToCloud } from '../../services/firebase';
@@ -209,20 +209,18 @@ export const LeadersCms: React.FC<LeadersCmsProps> = ({
 
               {/* Leader Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <BilingualField
+                <SingleField
                   label={isUrdu ? 'رہنما کا نام (Name)' : 'Leader Full Name'}
-                  valueEn={leader.name}
-                  valueUr={leader.nameUr}
-                  onChange={(en, ur) => updateLeader({ name: en, nameUr: ur })}
+                  value={leader.name}
+                  onChange={(val) => updateLeader({ name: val })}
                   required={true}
                   isUrdu={isUrdu}
                 />
 
-                <BilingualField
+                <SingleField
                   label={isUrdu ? 'عہدہ یا منصب (Role / Position)' : 'Designation / Role'}
-                  valueEn={leader.role}
-                  valueUr={leader.roleUr}
-                  onChange={(en, ur) => updateLeader({ role: en, roleUr: ur })}
+                  value={leader.role}
+                  onChange={(val) => updateLeader({ role: val })}
                   required={true}
                   isUrdu={isUrdu}
                 />
@@ -288,11 +286,10 @@ export const LeadersCms: React.FC<LeadersCmsProps> = ({
               </div>
 
               {/* Leadership Message & Quote */}
-              <BilingualField
+              <SingleField
                 label={isUrdu ? 'قائدانہ پیغام یا اقتباس (Leadership Quote / Message)' : 'Leadership Quote / Message (Feeds About Card)'}
-                valueEn={leader.message}
-                valueUr={leader.messageUr}
-                onChange={(en, ur) => updateLeader({ message: en, messageUr: ur })}
+                value={leader.message}
+                onChange={(val) => updateLeader({ message: val })}
                 multiline={true}
                 rows={3}
                 placeholder="Inspiring words for the community..."
@@ -300,11 +297,10 @@ export const LeadersCms: React.FC<LeadersCmsProps> = ({
               />
 
               {/* Bio */}
-              <BilingualField
+              <SingleField
                 label={isUrdu ? 'مختصر سوانح حیات (Bio)' : 'Biographical Profile Summary'}
-                valueEn={leader.bio}
-                valueUr={leader.bioUr}
-                onChange={(en, ur) => updateLeader({ bio: en, bioUr: ur })}
+                value={leader.bio}
+                onChange={(val) => updateLeader({ bio: val })}
                 multiline={true}
                 rows={2}
                 isUrdu={isUrdu}

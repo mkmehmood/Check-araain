@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SiteSettings } from '../../types';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { SaveBar } from './SaveBar';
 import { pushSettingsDocToCloud } from '../../services/firebase';
 import { UserCheck, Heart, Sparkles, HandCoins } from 'lucide-react';
@@ -18,11 +18,8 @@ export const CtaCms: React.FC<CtaCmsProps> = ({
 }) => {
   const [formData, setFormData] = useState({
     membershipTitle: settings.membershipTitle || '',
-    membershipTitleUr: settings.membershipTitleUr || '',
     membershipDesc: settings.membershipDesc || '',
-    membershipDescUr: settings.membershipDescUr || '',
     ctaMembershipBtn: settings.ctaMembershipBtn || '',
-    ctaMembershipBtnUr: settings.ctaMembershipBtnUr || '',
     donateTitle: settings.donateTitle || '',
     donateDesc: settings.donateDesc || '',
   });
@@ -35,11 +32,8 @@ export const CtaCms: React.FC<CtaCmsProps> = ({
   useEffect(() => {
     setFormData({
       membershipTitle: settings.membershipTitle || '',
-      membershipTitleUr: settings.membershipTitleUr || '',
       membershipDesc: settings.membershipDesc || '',
-      membershipDescUr: settings.membershipDescUr || '',
       ctaMembershipBtn: settings.ctaMembershipBtn || '',
-      ctaMembershipBtnUr: settings.ctaMembershipBtnUr || '',
       donateTitle: settings.donateTitle || '',
       donateDesc: settings.donateDesc || '',
     });
@@ -107,32 +101,22 @@ export const CtaCms: React.FC<CtaCmsProps> = ({
           </h4>
         </div>
 
-        <BilingualField
+        <SingleField
           label={isUrdu ? 'دعوتی عنوان (Title)' : 'Invitation Title'}
-          valueEn={formData.membershipTitle}
-          valueUr={formData.membershipTitleUr}
-          onChange={(en, ur) => {
-            setFormData(prev => ({
-              ...prev,
-              membershipTitle: en,
-              membershipTitleUr: ur,
-            }));
+          value={formData.membershipTitle}
+          onChange={(val) => {
+            setFormData(prev => ({ ...prev, membershipTitle: val }));
             setIsDirty(true);
           }}
-          placeholder="e.g. Join the Araain Bannu Welfare Movement / باضابطہ رکنیت حاصل کریں"
+          placeholder="e.g. Join the Araain Bannu Welfare Movement"
           isUrdu={isUrdu}
         />
 
-        <BilingualField
+        <SingleField
           label={isUrdu ? 'تفصیلی پیغام (Description)' : 'Invitation Message'}
-          valueEn={formData.membershipDesc}
-          valueUr={formData.membershipDescUr}
-          onChange={(en, ur) => {
-            setFormData(prev => ({
-              ...prev,
-              membershipDesc: en,
-              membershipDescUr: ur,
-            }));
+          value={formData.membershipDesc}
+          onChange={(val) => {
+            setFormData(prev => ({ ...prev, membershipDesc: val }));
             setIsDirty(true);
           }}
           multiline={true}
@@ -141,19 +125,14 @@ export const CtaCms: React.FC<CtaCmsProps> = ({
           isUrdu={isUrdu}
         />
 
-        <BilingualField
+        <SingleField
           label={isUrdu ? 'بٹن کا متن (Button Label)' : 'Action Button Text'}
-          valueEn={formData.ctaMembershipBtn}
-          valueUr={formData.ctaMembershipBtnUr}
-          onChange={(en, ur) => {
-            setFormData(prev => ({
-              ...prev,
-              ctaMembershipBtn: en,
-              ctaMembershipBtnUr: ur,
-            }));
+          value={formData.ctaMembershipBtn}
+          onChange={(val) => {
+            setFormData(prev => ({ ...prev, ctaMembershipBtn: val }));
             setIsDirty(true);
           }}
-          placeholder="e.g. Register as Official Member / آن لائن فارم پر کریں"
+          placeholder="e.g. Register as Official Member"
           isUrdu={isUrdu}
         />
       </div>
@@ -204,11 +183,8 @@ export const CtaCms: React.FC<CtaCmsProps> = ({
         onReset={() => {
           setFormData({
             membershipTitle: settings.membershipTitle || '',
-            membershipTitleUr: settings.membershipTitleUr || '',
             membershipDesc: settings.membershipDesc || '',
-            membershipDescUr: settings.membershipDescUr || '',
             ctaMembershipBtn: settings.ctaMembershipBtn || '',
-            ctaMembershipBtnUr: settings.ctaMembershipBtnUr || '',
             donateTitle: settings.donateTitle || '',
             donateDesc: settings.donateDesc || '',
           });

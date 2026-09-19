@@ -3,7 +3,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useData } from '../../context/DataContext';
 import { Registration } from '../../types';
 import QRCode from 'qrcode';
-import { Printer, ShieldCheck, Download, Check, Eye, Sliders, Palette, Calendar, RefreshCw, CheckCircle2, ScanLine, X } from 'lucide-react';
+import { Printer, ShieldCheck, Download, Check, Eye, CheckCircle2, ScanLine, X } from 'lucide-react';
 import { testDecodeQrDataUrl, ExtractedMemberData } from '../../utils/qrScanner';
 import { formatIssueDate } from '../../services/firebase';
 import { 
@@ -48,19 +48,6 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [copiedPayload, setCopiedPayload] = useState(false);
   const [showPayloadModal, setShowPayloadModal] = useState(false);
-
-  // Custom Website & Card Generator Branding Controls
-  const [customTitle, setCustomTitle] = useState(settings.siteNameEn || 'ARAAIN BANNU WELFARE ASSOCIATION');
-  const [customSubtitle, setCustomSubtitle] = useState('Khyber Pakhtunkhwa, Pakistan');
-  const [customSignatory, setCustomSignatory] = useState('Authorized Signatory / President');
-  const [customExpiry, setCustomExpiry] = useState(() => {
-    const d = new Date();
-    d.setFullYear(d.getFullYear() + 3);
-    return d.toISOString().slice(0, 10);
-  });
-  const [customWebsite, setCustomWebsite] = useState('www.araainbannu.org');
-  const [cardTheme, setCardTheme] = useState<'gold' | 'emerald' | 'navy' | 'crimson'>('gold');
-  const [showCustomizer, setShowCustomizer] = useState(false);
   const [mobileFace, setMobileFace] = useState<'both' | 'front' | 'back'>('both');
   const [qrTestResult, setQrTestResult] = useState<{
     tested: boolean;
@@ -68,6 +55,33 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
     extracted?: ExtractedMemberData;
   } | null>(null);
   const [testingQr, setTestingQr] = useState(false);
+
+  // Card branding is always derived from the organization's own site
+  // settings - never a separate, hand-typed copy the admin could let drift
+  // out of sync with the real identity.
+  const cardTitle = settings.siteName || 'ARAAIN BANNU WELFARE ASSOCIATION';
+  const cardSubtitle = settings.siteTagline || 'Khyber Pakhtunkhwa, Pakistan';
+  const cardSignatory = 'Authorized Signatory';
+  const cardWebsite = typeof window !== 'undefined' ? window.location.hostname : 'araainbannu.org';
+
+  // Card expires 3 years after its real issue date (fixed once, not recomputed on later views)
+  const cardExpiry = (() => {
+    if (!issueDateIso) return '';
+    const d = new Date(issueDateIso);
+    if (isNaN(d.getTime())) return '';
+    d.setFullYear(d.getFullYear() + 3);
+    return d.toLocaleDateString('en-GB');
+  })();
+
+  // Single, fixed brand theme matching the public website's own palette -
+  // no separate color-scheme picker to keep in sync with the site.
+  const brandTheme = {
+    headerGrad: 'from-[#16232F] via-[#1E3040] to-[#16232F]',
+    borderAccent: '#AD7A28',
+    textAccent: '#F5CA7B',
+    footerBg: 'bg-[#F8F5EE]',
+    footerAccent: 'text-[#AD7A28]',
+  };
 
   // Resolved English values for the card (English-only card)
   const englishFullName = registration ? (registration.fullNameEn || translateNameToEnglish(registration.fullName)) : '';
@@ -91,46 +105,6 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
     englishDistrict,
     englishProvince,
   ].filter(Boolean).join(', ');
-
-  const themeMap = {
-    gold: {
-      headerGrad: 'from-[#16232F] via-[#1E3040] to-[#16232F]',
-      borderAccent: '#AD7A28',
-      textAccent: '#F5CA7B',
-      badgeBg: 'bg-[#AD7A28]',
-      badgeText: 'text-white',
-      footerBg: 'bg-[#F8F5EE]',
-      footerAccent: 'text-[#AD7A28]',
-    },
-    emerald: {
-      headerGrad: 'from-[#064E3B] via-[#047857] to-[#064E3B]',
-      borderAccent: '#10B981',
-      textAccent: '#6EE7B7',
-      badgeBg: 'bg-[#059669]',
-      badgeText: 'text-white',
-      footerBg: 'bg-[#ECFDF5]',
-      footerAccent: 'text-[#059669]',
-    },
-    navy: {
-      headerGrad: 'from-[#0F172A] via-[#1E293B] to-[#0F172A]',
-      borderAccent: '#38BDF8',
-      textAccent: '#7DD3FC',
-      badgeBg: 'bg-[#0284C7]',
-      badgeText: 'text-white',
-      footerBg: 'bg-[#F0F9FF]',
-      footerAccent: 'text-[#0284C7]',
-    },
-    crimson: {
-      headerGrad: 'from-[#4C0519] via-[#881337] to-[#4C0519]',
-      borderAccent: '#FB7185',
-      textAccent: '#FECDD3',
-      badgeBg: 'bg-[#E11D48]',
-      badgeText: 'text-white',
-      footerBg: 'bg-[#FFF1F2]',
-      footerAccent: 'text-[#E11D48]',
-    },
-  };
-  const activeTheme = themeMap[cardTheme] || themeMap.gold;
 
   useEffect(() => {
     if (!registration) return;
@@ -350,14 +324,14 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
           </button>
 
           <button
-            onClick={() => setShowCustomizer(!showCustomizer)}
+            onClick={() => setShowPayloadModal(!showPayloadModal)}
             className={`app-btn-sm !rounded-lg inline-flex items-center gap-1.5 font-semibold transition-colors cursor-pointer ${
-              showCustomizer ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-white/10 hover:bg-white/15 text-slate-200'
+              showPayloadModal ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-white/10 hover:bg-white/15 text-slate-200'
             }`}
-            title="Customize Card Template & Council Branding"
+            title="View the full data encoded in the QR code"
           >
-            <Sliders className="w-3.5 h-3.5" />
-            <span>Customize</span>
+            <Eye className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Payload</span>
           </button>
 
           <button
@@ -374,108 +348,6 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
       <div className="flex-1 w-full max-w-5xl mx-auto p-4 sm:p-6 flex flex-col items-center">
         <div className="bg-white rounded-3xl w-full shadow-xl border border-slate-200 overflow-hidden flex flex-col">
         
-        {/* Card Customizer Drawer */}
-        {showCustomizer && (
-          <div className="no-print bg-slate-900 text-slate-200 px-4 sm:px-6 py-4 border-b border-slate-700 text-xs animate-fadeIn space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-              <div className="flex items-center gap-2 text-amber-300 font-bold text-sm">
-                <Sliders className="w-4 h-4" />
-                <span>Card Template & Council Branding Customizer</span>
-              </div>
-              <button
-                onClick={() => {
-                  setCustomTitle(settings.siteNameEn || 'ARAAIN BANNU WELFARE ASSOCIATION');
-                  setCustomSubtitle('Khyber Pakhtunkhwa, Pakistan');
-                  setCustomSignatory('Authorized Signatory / President');
-                  setCustomWebsite('www.araainbannu.org');
-                  setCardTheme('gold');
-                }}
-                className="app-btn-link text-[11px] text-slate-400 hover:text-white"
-              >
-                <RefreshCw className="w-3 h-3" />
-                <span>Reset Defaults</span>
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-300 mb-1">Association Title</label>
-                <input
-                  type="text"
-                  value={customTitle}
-                  onChange={(e) => setCustomTitle(e.target.value)}
-                  className="w-full px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:ring-1 focus:ring-amber-400"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-300 mb-1">Council / Chapter Subtitle</label>
-                <input
-                  type="text"
-                  value={customSubtitle}
-                  onChange={(e) => setCustomSubtitle(e.target.value)}
-                  className="w-full px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:ring-1 focus:ring-amber-400"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-300 mb-1">Signatory Title</label>
-                <input
-                  type="text"
-                  value={customSignatory}
-                  onChange={(e) => setCustomSignatory(e.target.value)}
-                  className="w-full px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:ring-1 focus:ring-amber-400"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-300 mb-1">Valid Thru / Expiry Date</label>
-                <input
-                  type="text"
-                  value={customExpiry}
-                  onChange={(e) => setCustomExpiry(e.target.value)}
-                  className="w-full px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white text-xs focus:ring-1 focus:ring-amber-400"
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800">
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold text-slate-400">Card Color Scheme:</span>
-                <div className="flex items-center gap-1.5">
-                  {[
-                    { id: 'gold', name: 'Gold & Navy', hex: '#AD7A28' },
-                    { id: 'emerald', name: 'Emerald KP', hex: '#10B981' },
-                    { id: 'navy', name: 'Royal Navy', hex: '#0284C7' },
-                    { id: 'crimson', name: 'Crimson', hex: '#E11D48' },
-                  ].map((th) => (
-                    <button
-                      key={th.id}
-                      onClick={() => setCardTheme(th.id as any)}
-                      className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                        cardTheme === th.id ? 'ring-2 ring-white text-white' : 'opacity-70 hover:opacity-100 text-slate-300'
-                      }`}
-                      style={{ backgroundColor: th.hex }}
-                    >
-                      <span>{th.name}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold text-slate-400">Website URL:</span>
-                <input
-                  type="text"
-                  value={customWebsite}
-                  onChange={(e) => setCustomWebsite(e.target.value)}
-                  className="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-amber-300 text-xs font-mono"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* View QR Payload Details Drawer/Modal (if opened) */}
         {showPayloadModal && (
           <div className="no-print bg-slate-900 text-slate-200 px-6 py-4 border-b border-slate-700 text-xs animate-fadeIn">
@@ -596,14 +468,14 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
 
                 {/* Top Header Bar */}
                 <div 
-                  className={`bg-gradient-to-r ${activeTheme.headerGrad} text-white px-3 py-2 border-b-2 flex items-center justify-between relative z-10 shrink-0`}
-                  style={{ borderBottomColor: activeTheme.borderAccent }}
+                  className={`bg-gradient-to-r ${brandTheme.headerGrad} text-white px-3 py-2 border-b-2 flex items-center justify-between relative z-10 shrink-0`}
+                  style={{ borderBottomColor: brandTheme.borderAccent }}
                 >
                   <div className="flex items-center gap-2">
                     {/* Official Association Seal */}
                     <div 
                       className="w-8 h-8 rounded-full p-0.5 shadow shrink-0 flex items-center justify-center"
-                      style={{ background: `linear-gradient(135deg, ${activeTheme.borderAccent}, #FFFFFF)` }}
+                      style={{ background: `linear-gradient(135deg, ${brandTheme.borderAccent}, #FFFFFF)` }}
                     >
                       {settings.logoData ? (
                         <img 
@@ -620,12 +492,12 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
                     <div>
                       <div 
                         className="font-extrabold text-[10px] sm:text-[12px] tracking-tight leading-none uppercase truncate max-w-[210px] sm:max-w-[280px] font-display"
-                        style={{ color: activeTheme.textAccent }}
+                        style={{ color: brandTheme.textAccent }}
                       >
-                        {customTitle}
+                        {cardTitle}
                       </div>
                       <div className="text-[8px] sm:text-[9px] text-slate-300 tracking-wide mt-0.5 truncate max-w-[210px] sm:max-w-[280px] font-sans">
-                        {customSubtitle}
+                        {cardSubtitle}
                       </div>
                     </div>
                   </div>
@@ -634,7 +506,7 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
                   <div className="text-right shrink-0">
                     <span 
                       className="inline-block px-2 py-0.5 rounded text-white text-[8px] sm:text-[9px] font-bold font-mono tracking-wider"
-                      style={{ backgroundColor: activeTheme.borderAccent }}
+                      style={{ backgroundColor: brandTheme.borderAccent }}
                     >
                       {cardId}
                     </span>
@@ -648,7 +520,7 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
                   <div className="shrink-0 flex flex-col items-center">
                     <div 
                       className="w-[68px] h-[85px] sm:w-[82px] sm:h-[102px] rounded-lg border-2 bg-slate-100 overflow-hidden shadow-sm flex items-center justify-center"
-                      style={{ borderColor: activeTheme.borderAccent }}
+                      style={{ borderColor: brandTheme.borderAccent }}
                     >
                       {registration.photoData ? (
                         <img 
@@ -724,7 +596,7 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
                       <div className="flex items-center gap-1">
                         <span className="uppercase tracking-wider">Valid Thru:</span>
                         <span className="font-mono font-semibold text-slate-700">
-                          {customExpiry}
+                          {cardExpiry}
                         </span>
                       </div>
                     </div>
@@ -733,13 +605,13 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
                 </div>
 
                 {/* Front Footer Bar */}
-                <div className={`${activeTheme.footerBg} px-3 py-1.5 border-t border-slate-200 flex items-center justify-between relative z-10 shrink-0`}>
-                  <div className={`text-[7.5px] sm:text-[8px] ${activeTheme.footerAccent} font-bold flex items-center gap-1 uppercase tracking-wider`}>
+                <div className={`${brandTheme.footerBg} px-3 py-1.5 border-t border-slate-200 flex items-center justify-between relative z-10 shrink-0`}>
+                  <div className={`text-[7.5px] sm:text-[8px] ${brandTheme.footerAccent} font-bold flex items-center gap-1 uppercase tracking-wider`}>
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                     <span>Verified Official Member • Bannu KPK</span>
                   </div>
                   <div className="text-[7.5px] sm:text-[8px] text-slate-600 font-medium truncate max-w-[150px]">
-                    {customSignatory}
+                    {cardSignatory}
                   </div>
                 </div>
 
@@ -768,12 +640,12 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
 
                 {/* Back Top Header */}
                 <div 
-                  className={`bg-gradient-to-r ${activeTheme.headerGrad} text-white px-3 py-1.5 border-b-2 flex items-center justify-between relative z-10 shrink-0`}
-                  style={{ borderBottomColor: activeTheme.borderAccent }}
+                  className={`bg-gradient-to-r ${brandTheme.headerGrad} text-white px-3 py-1.5 border-b-2 flex items-center justify-between relative z-10 shrink-0`}
+                  style={{ borderBottomColor: brandTheme.borderAccent }}
                 >
                   <div 
                     className="font-bold text-[9px] sm:text-[11px] uppercase tracking-wider font-display"
-                    style={{ color: activeTheme.textAccent }}
+                    style={{ color: brandTheme.textAccent }}
                   >
                     Official Identification & Verification
                   </div>
@@ -827,9 +699,9 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
                       <span className="text-slate-500 font-medium uppercase tracking-wider shrink-0">Website:</span>
                       <span 
                         className="font-mono text-[8px] font-bold"
-                        style={{ color: activeTheme.borderAccent }}
+                        style={{ color: brandTheme.borderAccent }}
                       >
-                        {customWebsite}
+                        {cardWebsite}
                       </span>
                     </div>
 
@@ -856,7 +728,7 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
                     </div>
                     <div 
                       className="text-[7px] sm:text-[7.5px] font-bold mt-1 text-center leading-none uppercase tracking-wider"
-                      style={{ color: activeTheme.borderAccent }}
+                      style={{ color: brandTheme.borderAccent }}
                     >
                       SCAN FULL DOSSIER
                     </div>
@@ -868,7 +740,7 @@ export const MembershipCardModal: React.FC<MembershipCardModalProps> = ({
                 </div>
 
                 {/* Back Footer */}
-                <div className={`${activeTheme.footerBg} px-3 py-1 border-t border-slate-200 flex items-center justify-between text-[7px] sm:text-[7.5px] text-slate-600 relative z-10 shrink-0`}>
+                <div className={`${brandTheme.footerBg} px-3 py-1 border-t border-slate-200 flex items-center justify-between text-[7px] sm:text-[7.5px] text-slate-600 relative z-10 shrink-0`}>
                   <div className="truncate max-w-[200px]">
                     Central Office: Bannu City, Khyber Pakhtunkhwa
                   </div>

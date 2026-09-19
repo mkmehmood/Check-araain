@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SiteSettings } from '../../types';
 import { ImageUploadField } from './ImageUploadField';
-import { BilingualField } from './BilingualField';
+import { SingleField } from './SingleField';
 import { SaveBar } from './SaveBar';
 import { pushSettingsDocToCloud, compressImage } from '../../services/firebase';
 import { 
@@ -46,7 +46,6 @@ export const HeroCms: React.FC<HeroCmsProps> = ({
     // 6. Floating Notice Badge with floating action button
     heroNoticeBadge: settings.heroNoticeBadge || '',
     heroNoticeText: settings.heroNoticeText || '',
-    heroNoticeTextUr: settings.heroNoticeTextUr || '',
     heroNoticeImage: settings.heroNoticeImage || '',
     heroNoticeButtonText: (settings as any).heroNoticeButtonText || 'View Details',
     heroNoticeButtonLink: (settings as any).heroNoticeButtonLink || '#announcement',
@@ -75,7 +74,6 @@ export const HeroCms: React.FC<HeroCmsProps> = ({
       heroSlideDuration: Number(settings.heroSlideDuration) || 5,
       heroNoticeBadge: settings.heroNoticeBadge || '',
       heroNoticeText: settings.heroNoticeText || '',
-      heroNoticeTextUr: settings.heroNoticeTextUr || '',
       heroNoticeImage: settings.heroNoticeImage || '',
       heroNoticeButtonText: (settings as any).heroNoticeButtonText || 'View Details',
       heroNoticeButtonLink: (settings as any).heroNoticeButtonLink || '#announcement',
@@ -159,7 +157,6 @@ export const HeroCms: React.FC<HeroCmsProps> = ({
         heroSlideDuration: Number(formData.heroSlideDuration) || 5,
         heroNoticeBadge: formData.heroNoticeBadge,
         heroNoticeText: formData.heroNoticeText,
-        heroNoticeTextUr: formData.heroNoticeTextUr,
         heroNoticeImage: formData.heroNoticeImage,
         heroNoticeButtonText: formData.heroNoticeButtonText,
         heroNoticeButtonLink: formData.heroNoticeButtonLink,
@@ -433,16 +430,13 @@ export const HeroCms: React.FC<HeroCmsProps> = ({
             />
           </div>
 
-          <BilingualField
+          <SingleField
             label={isUrdu ? 'نوٹس کا متن (Floating Notice Text)' : 'Floating Notice Text'}
-            valueEn={formData.heroNoticeText}
-            valueUr={formData.heroNoticeTextUr}
-            onChangeEn={(val) => updateField('heroNoticeText', val)}
-            onChangeUr={(val) => updateField('heroNoticeTextUr', val)}
+            value={formData.heroNoticeText}
+            onChange={(val) => updateField('heroNoticeText', val)}
             multiline={true}
             rows={2}
-            placeholderEn="Membership renewal drive for session 2025-2026 is currently active..."
-            placeholderUr="آرائیں بنوں ممبرشپ مہم 2025-2026 کا باضابطہ آغاز ہو چکا ہے..."
+            placeholder="Membership renewal drive for session 2025-2026 is currently active..."
             isUrdu={isUrdu}
           />
 
@@ -557,7 +551,6 @@ export const HeroCms: React.FC<HeroCmsProps> = ({
             heroSlideDuration: Number(settings.heroSlideDuration) || 5,
             heroNoticeBadge: settings.heroNoticeBadge || '',
             heroNoticeText: settings.heroNoticeText || '',
-            heroNoticeTextUr: settings.heroNoticeTextUr || '',
             heroNoticeImage: settings.heroNoticeImage || '',
             heroNoticeButtonText: (settings as any).heroNoticeButtonText || 'View Details',
             heroNoticeButtonLink: (settings as any).heroNoticeButtonLink || '#announcement',
