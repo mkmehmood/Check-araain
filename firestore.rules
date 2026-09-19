@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Global Helper Functions ─────────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Authorized Council Administrators: Supports all case variations
+    function isAdmin() {
+      return isSignedIn() && (
+        (request.auth.token.email != null && (
+          request.auth.token.email.lower() in [
+            "3tahirmeer@gmail.com",
+            "3sosososo0331@gmail.com",
+            "3mahmoodkhan@gmail.com"
+          ]
+          || request.auth.token.email in [
+            "3tahirmeer@gmail.com",
+            "3sosososo0331@gmail.com",
+            "3mahmoodkhan@gmail.com",
+            "3Mahmoodkhan@gmail.com"
+          ]
+        ))
+        || exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // ── 1. siteConfig: Public CMS website configuration ────────────────
+    // Public visitors can read live published settings, banners, leaders, programs, events, pages, gallery
+    // Only verified administrators can update or save site configuration
+    match /siteConfig/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── 2. registrations: Membership Registrations ──────────────────────
+    // Public visitors can submit their membership application
+    // Only verified administrators can read applicant PII, approve/reject, and assign card IDs
+    match /registrations/{regId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ── 3. donations: Financial Contributions & Proof Slips ─────────────
+    // Public donors can submit their donation payment proof
+    // Only verified administrators can view financial records, verify, or manage donations
+    match /donations/{donId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ── 4. messages: Public Contact Inquiries ───────────────────────────
+    // Public visitors can send messages via the Contact Us form
+    // Only verified administrators can read, query, update status, and delete messages
+    match /messages/{msgId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ── 5. verifiedCards: Public Membership Card Verification ───────────
+    // Anyone scanning a QR code can verify a card's validity
+    // Only verified administrators can write or issue cards
+    match /verifiedCards/{cardId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── 6. admins: Audit & Session Logs ─────────────────────────────────
+    match /admins/{uid} {
+      allow read, write: if isSignedIn();
+    }
+
+    // ── Default Deny for any other collections ─────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

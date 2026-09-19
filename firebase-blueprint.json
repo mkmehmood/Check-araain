@@ -1,0 +1,103 @@
+{
+  "entities": {
+    "Registration": {
+      "title": "Registration",
+      "description": "Membership registration application record",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string", "maxLength": 150 },
+        "fatherName": { "type": "string", "maxLength": 150 },
+        "gender": { "type": "string", "maxLength": 30 },
+        "membershipType": { "type": "string", "maxLength": 60 },
+        "cnic": { "type": "string", "maxLength": 30 },
+        "dob": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 120 },
+        "whatsapp": { "type": "string", "maxLength": 30 },
+        "residentialStatus": { "type": "string", "maxLength": 60 },
+        "affiliated": { "type": "string", "maxLength": 200 },
+        "education": { "type": "string", "maxLength": 100 },
+        "work": { "type": "string", "maxLength": 100 },
+        "reason": { "type": "string", "maxLength": 1000 },
+        "street": { "type": "string", "maxLength": 200 },
+        "city": { "type": "string", "maxLength": 100 },
+        "state": { "type": "string", "maxLength": 100 },
+        "country": { "type": "string", "maxLength": 100 },
+        "photoData": { "type": "string", "maxLength": 700000 },
+        "status": { "type": "string", "enum": ["new", "approved", "rejected"] },
+        "cardId": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["fullName", "whatsapp", "status"]
+    },
+    "Donation": {
+      "title": "Donation",
+      "description": "Donation transaction and verification slip record",
+      "type": "object",
+      "properties": {
+        "donorName": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 120 },
+        "amount": { "type": "string", "maxLength": 50 },
+        "method": { "type": "string", "maxLength": 100 },
+        "txId": { "type": "string", "maxLength": 100 },
+        "note": { "type": "string", "maxLength": 1000 },
+        "photoData": { "type": "string", "maxLength": 700000 },
+        "status": { "type": "string", "enum": ["unverified", "verified", "rejected"] }
+      },
+      "required": ["donorName", "phone", "amount", "status"]
+    },
+    "SiteConfig": {
+      "title": "SiteConfig",
+      "description": "Dynamic CMS configuration documents managed exclusively by administrators",
+      "type": "object",
+      "properties": {
+        "items": { "type": "array" }
+      }
+    },
+    "AdminSession": {
+      "title": "AdminSession",
+      "description": "Admin session and activity tracking document",
+      "type": "object",
+      "properties": {
+        "lastLogin": { "type": "string" },
+        "email": { "type": "string", "maxLength": 120 }
+      }
+    },
+    "VerifiedCard": {
+      "title": "VerifiedCard",
+      "description": "Privacy-safe public membership card verification record (no PII)",
+      "type": "object",
+      "properties": {
+        "cardId": { "type": "string", "maxLength": 60 },
+        "fullNameEn": { "type": "string", "maxLength": 150 },
+        "fullNameUr": { "type": "string", "maxLength": 150 },
+        "membershipType": { "type": "string", "maxLength": 80 },
+        "city": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "maxLength": 40 },
+        "issuedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["cardId", "fullNameEn", "status"]
+    }
+  },
+  "firestore": {
+    "/registrations/{registrationId}": {
+      "schema": "Registration",
+      "description": "Public submissions with strict input sanitization; read and decision status restricted to verified admins"
+    },
+    "/donations/{donationId}": {
+      "schema": "Donation",
+      "description": "Public proof submissions with unverified default status; read and verification restricted to verified admins"
+    },
+    "/siteConfig/{configDocId}": {
+      "schema": "SiteConfig",
+      "description": "Publicly readable website CMS configurations; write restricted strictly to verified administrators"
+    },
+    "/admins/{adminUid}": {
+      "schema": "AdminSession",
+      "description": "Admin identity and session document; access restricted strictly to verified administrators"
+    },
+    "/verifiedCards/{cardId}": {
+      "schema": "VerifiedCard",
+      "description": "Publicly verifiable non-sensitive membership authenticity document; read allowed publicly, writes restricted to verified admins"
+    }
+  }
+}

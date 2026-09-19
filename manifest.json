@@ -1,0 +1,107 @@
+{
+  "name": "ARAAIN BANNU",
+  "short_name": "ARAAIN BANNU",
+  "version": "1.7.1",
+  "description": "ARAAIN BANNU. Unity, Empowerment, Development.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#16232F",
+  "theme_color": "#16232F",
+  "lang": "ur",
+  "dir": "rtl",
+  "categories": [
+    "community",
+    "social"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-72x72.png?v=1788423504",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-96x96.png?v=1788423504",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-128x128.png?v=1788423504",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-144x144.png?v=1788423504",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-152x152.png?v=1788423504",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192x192.png?v=1788423504",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-384x384.png?v=1788423504",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512x512.png?v=1788423504",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-192x192.png?v=1788423504",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-maskable-512x512.png?v=1788423504",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "رکنیت",
+      "short_name": "رکنیت",
+      "description": "Apply for ARAAIN BANNU membership",
+      "url": "/Tahir-meer/index.html#membership",
+      "icons": [
+        {
+          "src": "icons/icon-96x96.png?v=1788423504",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "تقریبات",
+      "short_name": "تقریبات",
+      "description": "Upcoming events",
+      "url": "/Tahir-meer/index.html#events",
+      "icons": [
+        {
+          "src": "icons/icon-96x96.png?v=1788423504",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

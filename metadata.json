@@ -1,0 +1,10 @@
+{
+  "name": "ARAAIN BANNU",
+  "description": "ARAAIN BANNU — Unity, Empowerment, Development (Bannu Regional Organisation)",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

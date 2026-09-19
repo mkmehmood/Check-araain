@@ -1,0 +1,52 @@
+import { DictionaryEntry } from './types';
+
+/**
+ * Professions, Occupations, Education, and Qualifications Bilingual Dictionary
+ */
+export const PROFESSIONS_DICTIONARY_ENTRIES: DictionaryEntry[] = [
+  { en: 'Doctor', ur: 'ڈاکٹر', domain: 'professions', aliasesEn: ['Physician', 'Medical Doctor'], aliasesUr: ['طبیب'] },
+  { en: 'Surgeon', ur: 'سرجن', domain: 'professions' },
+  { en: 'Engineer', ur: 'انجینئر', domain: 'professions' },
+  { en: 'Civil Engineer', ur: 'سول انجینئر', domain: 'professions' },
+  { en: 'Software Engineer', ur: 'سافٹ ویئر انجینئر', domain: 'professions' },
+  { en: 'Electrical Engineer', ur: 'الیکٹریکل انجینئر', domain: 'professions' },
+  { en: 'Mechanical Engineer', ur: 'مکینیکل انجینئر', domain: 'professions' },
+  { en: 'Teacher', ur: 'استاد', domain: 'professions', aliasesEn: ['Educator', 'Instructor'], aliasesUr: ['معلم', 'مدرس'] },
+  { en: 'Professor', ur: 'پروفیسر', domain: 'professions' },
+  { en: 'Lecturer', ur: 'لیکچرر', domain: 'professions' },
+  { en: 'Lawyer', ur: 'وکیل', domain: 'professions', aliasesEn: ['Advocate', 'Attorney'], aliasesUr: ['ایڈووکیٹ'] },
+  { en: 'Advocate High Court', ur: 'ایڈووکیٹ ہائی کورٹ', domain: 'professions' },
+  { en: 'Advocate Supreme Court', ur: 'ایڈووکیٹ سپریم کورٹ', domain: 'professions' },
+  { en: 'Judge', ur: 'جج', domain: 'professions', aliasesUr: ['قاضی', 'منصف'] },
+  { en: 'Businessman', ur: 'تاجر', domain: 'professions', aliasesEn: ['Trader', 'Entrepreneur', 'Businessperson'], aliasesUr: ['کاروباری', 'تاجر حضرات'] },
+  { en: 'Merchant', ur: 'سوداگر', domain: 'professions' },
+  { en: 'Accountant', ur: 'اکاؤنٹنٹ', domain: 'professions', aliasesUr: ['محاسب'] },
+  { en: 'Chartered Accountant', ur: 'چارٹرڈ اکاؤنٹنٹ', domain: 'professions' },
+  { en: 'Banker', ur: 'بینکر', domain: 'professions' },
+  { en: 'Government Servant', ur: 'سرکاری ملازم', domain: 'professions', aliasesEn: ['Public Servant', 'Civil Servant'] },
+  { en: 'Police Officer', ur: 'پولیس آفیسر', domain: 'professions' },
+  { en: 'Army Officer', ur: 'فوجی افسر', domain: 'professions' },
+  { en: 'Journalist', ur: 'صحافی', domain: 'professions' },
+  { en: 'Farmer', ur: 'زمیندار', domain: 'professions', aliasesEn: ['Agriculturist', 'Landlord'], aliasesUr: ['کاشتکار'] },
+  { en: 'Real Estate Consultant', ur: 'پراپرٹی ڈیلر', domain: 'professions', aliasesEn: ['Property Dealer'] },
+  { en: 'Pharmacist', ur: 'فارماسسٹ', domain: 'professions' },
+  { en: 'Chemist', ur: 'کیمسٹ', domain: 'professions' },
+  { en: 'Student', ur: 'طالبعلم', domain: 'professions', aliasesUr: ['طالب علم'] },
+  { en: 'Researcher', ur: 'محقق', domain: 'professions' },
+  { en: 'Social Worker', ur: 'سماجی کارکن', domain: 'professions' },
+  { en: 'Retired Officer', ur: 'ریٹائرڈ افسر', domain: 'professions' },
+  { en: 'Consultant', ur: 'مشیر', domain: 'professions' },
+  { en: 'Contractor', ur: 'ٹھیکیدار', domain: 'professions' },
+  { en: 'Technician', ur: 'ٹیکنیشن', domain: 'professions' },
+  { en: 'Community Member', ur: 'کمیونٹی ممبر', domain: 'professions' },
+
+  // Education Qualifications
+  { en: "Bachelor's Degree", ur: 'گریجویشن', domain: 'education', aliasesEn: ['Bachelors', 'Graduation', 'BA', 'BSc', 'BS', 'B.Com'] },
+  { en: "Master's Degree", ur: 'ماسٹرز', domain: 'education', aliasesEn: ['Masters', 'Post Graduate', 'MA', 'MSc', 'MS', 'M.Com'] },
+  { en: 'Doctor of Philosophy (PhD)', ur: 'پی ایچ ڈی', domain: 'education', aliasesEn: ['PhD', 'Doctorate'] },
+  { en: 'Intermediate / F.Sc / F.A', ur: 'انٹرمیڈیٹ', domain: 'education', aliasesEn: ['Intermediate', 'FSc', 'FA', 'HSSC'] },
+  { en: 'Matriculation / Secondary School', ur: 'میٹرک', domain: 'education', aliasesEn: ['Matric', 'SSC', 'O-Levels'] },
+  { en: 'Diploma / Technical Certificate', ur: 'ڈپلومہ', domain: 'education', aliasesEn: ['Diploma', 'DAE'] },
+  { en: 'Medical Degree (MBBS / BDS)', ur: 'ایم بی بی ایس', domain: 'education', aliasesEn: ['MBBS', 'BDS'] },
+  { en: 'Law Degree (LLB / LLM)', ur: 'ایل ایل بی', domain: 'education', aliasesEn: ['LLB', 'LLM'] },
+];
