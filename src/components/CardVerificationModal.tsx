@@ -759,10 +759,38 @@ export const CardVerificationModal: React.FC<CardVerificationModalProps> = ({
                   </div>
                 )}
 
+                {extractedData.dob && (
+                  <div className="col-span-2 sm:col-span-1 bg-white p-2 rounded-lg border border-blue-100">
+                    <span className="text-[10px] text-slate-400 block">{isUrdu ? 'تاریخ پیدائش' : 'Date of Birth'}:</span>
+                    <span className="font-mono font-semibold text-slate-700">{extractedData.dob}</span>
+                  </div>
+                )}
+
                 {extractedData.membershipType && (
                   <div className="col-span-2 sm:col-span-1 bg-white p-2 rounded-lg border border-blue-100">
                     <span className="text-[10px] text-slate-400 block">{isUrdu ? 'کیٹگری' : 'Category'}:</span>
                     <span className="font-medium text-slate-700">{extractedData.membershipType}</span>
+                  </div>
+                )}
+
+                {extractedData.occupation && (
+                  <div className="col-span-2 sm:col-span-1 bg-white p-2 rounded-lg border border-blue-100">
+                    <span className="text-[10px] text-slate-400 block">{isUrdu ? 'پیشہ' : 'Occupation'}:</span>
+                    <span className="font-medium text-slate-700">{extractedData.occupation}</span>
+                  </div>
+                )}
+
+                {extractedData.education && (
+                  <div className="col-span-2 sm:col-span-1 bg-white p-2 rounded-lg border border-blue-100">
+                    <span className="text-[10px] text-slate-400 block">{isUrdu ? 'تعلیم' : 'Education'}:</span>
+                    <span className="font-medium text-slate-700">{extractedData.education}</span>
+                  </div>
+                )}
+
+                {extractedData.address && (
+                  <div className="col-span-2 bg-white p-2 rounded-lg border border-blue-100">
+                    <span className="text-[10px] text-slate-400 block">{isUrdu ? 'پتہ' : 'Address'}:</span>
+                    <span className="font-medium text-slate-700 break-words">{extractedData.address}</span>
                   </div>
                 )}
               </div>
